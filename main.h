@@ -5,8 +5,7 @@
 #include <stdarg.h>
 
 /**
- * struct flags - struct containing flags to "turn on"
- * when a flag specifier is passed to _printf()
+ * struct flags - struct containing flags to turn on
  * @plus: flag for the '+' character
  * @space: flag for the ' ' character
  * @hash: flag for the '#' character
