@@ -1,41 +1,47 @@
 #include "main.h"
 
 /**
-  * _printf - printing like printf
-  * @format: Argument
-  *
-  * Return: string to output
-  */
+ * _printf - prints like  printf
+ * @format: args to the function
+ *
+ * Return: formatted output string
+ */
+
 int _printf(const char *format, ...)
 {
-	int count = 0;
-	va_list args;
+	int (*pfunc)(va_list, flags_t *);
+		const char *p;
+		va_list arguments;
+		flags_t flags = {0, 0, 0};
 
-	if (format == NULL)
+		register int count = 0;
+
+	va_start(arguments, format);
+		if (!format || (format[0] == '%' && !format[1]))
+			return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
 		return (-1);
-
-	va_start(args, format);
-	while (*format)
+	for (p = format; *p; p++)
 	{
-		if (*format == '%')
-		{
-			format++;
-			if (*format == '\0' || *format == ' ')
-				break;
-
-			if (*format == 'c')
-				count += handle_c(args);
-			else if (*format == 's')
-				count += handle_s(args);
-			else if (*format == '%')
-				count += print_char('%');
-		}
-		else
-		{
-			count += print_char(*format);
-		}
-		format++;
+		if (*p == '%')
+	{
+		 p++;
+		if (*p == '%')
+	{
+		count += _putchar('%');
+		continue;
 	}
-	va_end(args);
+		while (get_flag(*p, &flags))
+			p++;
+		pfunc = get_print(*p);
+		count += (pfunc)
+			? pfunc(arguments, &flags)
+			: _printf("%%%c", *p);
+	}
+		else
+	count += _putchar(*p);
+	}
+	_putchar(-1);
+		va_end(arguments);
 	return (count);
 }
